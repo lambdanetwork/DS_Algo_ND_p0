@@ -4,10 +4,6 @@ It's ok if you don't understand how to read files.
 """
 import csv
 
-text_outgoing_phone_number = {};
-call_incoming_number =  {};
-call_answering_number =  {};
-
 outgoing = set()
 non_tele = set()
 answer = set();
