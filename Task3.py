@@ -6,25 +6,31 @@ import csv
  
 # helper ==========================
 def get_mobile_prefix(str):
-  if(not(")" in str) and str.find("140") != 0):
-    [prefix, number] = str.split(" ");
+  mobile_prefixes = ['7','8','9'];
+  if(mobile_prefixes.index(str[0]) >= 0):
+    # if str start with oneof 7,8,9, get the first 4 digits
+    prefix = str[0:4]
     return prefix
   else:
     return None
 
-def get_fixed_line(str):
+def get_area_code(str):
   if(")" in str):
     close_brace_index = str.find(")");
-    area = str[1:close_brace_index];
-    return area;
+    # index 0 is always "("
+    area_code = str[1:close_brace_index];
+    return area_code;
   else:
     return None;
     
+def is_telemarketer(str):
+  if(str.startswith("140")):
+    return true
+    
 # main ==========================
-area_codes = set();
-mobile_prefix = set();
+bangalore_area_code = set();
 fixed_lines_in_bangalore = 0;
-total = 0;
+total_call_from_bangalore = 0;
 
 with open('texts.csv', 'r') as f:
     reader = csv.reader(f)
@@ -35,27 +41,32 @@ with open('calls.csv', 'r') as f:
     calls = list(reader)
     total = len(calls)
     for call in calls:
-      incoming_number = call[0];
-      answering_number = call[1];
-      area_incoming = get_fixed_line(incoming_number)
-      area_answering = get_fixed_line(answering_number)
-      if(area_incoming == "080" and area_answering == "080"):
-        fixed_lines_in_bangalore+=1;
+      if call[0].startswith("(080)"):
+        # add all call from bangalore
+        total_call_from_bangalore +=1;
+        if(call[1].startswith("(080)")):
+          fixed_lines_in_bangalore+=1;
 
-      mobile_incoming = get_mobile_prefix(incoming_number);
-      mobile_answering = get_mobile_prefix(answering_number);
+        # try to get the area code or mobile-prefixes
+        area_code = get_area_code(call[1]);
+        if(area_code is not None):
+          bangalore_area_code.add(area_code)
+          continue
 
-      if(area_incoming is not None):
-        area_codes.add(area_incoming)
-      if(area_answering is not None):
-        area_codes.add(area_answering)
-      if(mobile_incoming is not None):
-        mobile_prefix.add(mobile_incoming)
-      if(mobile_answering is not None):
-        mobile_prefix.add(mobile_answering)
+        if(is_telemarketer(call[1])):
+          bangalore_area_code.add("140")
+          continue
 
+        # else, must be mobile number, just get prefix
+        bangalore_area_code.add(get_mobile_prefix(call[1]))
+
+        
+        
+
+        
 #PART A
-print("The numbers called by people in Bangalore have codes: {}, {}".format(", ".join(area_codes), ", ".join(mobile_prefix)))
+print("""The numbers called by people in Bangalore have codes: 
+{}""".format("\n".join(bangalore_area_code)))
 #PART B
 print("{} percent of calls from fixed lines in Bangalore are calls to other fixed lines in Bangalore.".format((round(fixed_lines_in_bangalore / total * 100, 2))))
 
