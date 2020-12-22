@@ -27,26 +27,20 @@
 
 ### Task3:
 - The time-complexity for this algorithm is **O(n)**
-- In this code, we will loop all the calls and we will classify into three different data
-  1. All call that is made from (080) to (080)
-  2. extract the area_code of this call and store it in `Set` to avoid duplicate
-  3. extract the mobile_code of this call and store it in `Set` to avoid duplicate
-- To answer question B, just get the length of calls.txt and the data from number 1 above.
-- For answer of question A, we just print the phone number that we have stored in no.2, no.3 above
-
+- In this code, we will loop all the calls and we will first check that call is made from (080):
+  1. if it's telemarketer just store the "140" to answer
+  2. if it's area code, it startwith "(", try to extract the areacode
+  3. if it's mobile-prefix, it has "space", get the first 4 digit
+- To answer question B, we will get number of call from (080) to (080) divide by total call made from (080)
 
 ### Task4:
-- The time-complexity for this algorithm is **O(m*n)**
+- The time-complexity for this algorithm is **O(n)** excluding the built-in function `difference` which has unknown complexity 
 - The hint to this question is telemarketer: 
   1. will not send nor receive text
   2. will make outgoing call but not incoming call
 
-- To answer this question, we will create 3 dictionary, so that we can quickly access the data with O(1):
-  1. text_outgoing_phone_number
-  2. call_incoming_number -> list of outgoing number
-  3. call_answering_number -> list of receving number
+- To answer this question, we will create 2 sets:
+  1. non_tele -> number that fill the requirement for telemarketer as stated above
+  2. outgoing -> all outgoing number
 
-- Once we get the three dictionaries populated.
-  1. loop from call_incoming_number 
-     * for each number, make sure this number is not in text_outgoing_number (never send nor receive text)
-     *  this number is not in call_answering_number, as in never receive a call
+- Use built-in function Set.difference() to get all tele number, by applying outgoing.difference(non_tele)
