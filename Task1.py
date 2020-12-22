@@ -4,27 +4,23 @@ It's ok if you don't understand how to read files.
 """
 import csv
 
-phoneNumber = {};
+unique_tele_nums = set()
 
 with open('texts.csv', 'r') as f:
     reader = csv.reader(f)
     texts = list(reader)
     for text in texts:
-        incoming_number = text[0];
-        answering_number = text[1];
-        phoneNumber[incoming_number] = True;
-        phoneNumber[answering_number] = True;
+        unique_tele_nums.add(text[0])
+        unique_tele_nums.add(text[1])
 
 with open('calls.csv', 'r') as f:
     reader = csv.reader(f)
     calls = list(reader)
     for call in calls:
-        incoming_number = call[0];
-        answering_number = call[1];
-        phoneNumber[incoming_number] = True;
-        phoneNumber[answering_number] = True;
+        unique_tele_nums.add(call[0])
+        unique_tele_nums.add(call[1])
         
-print ("There are {0} different telephone numbers in the records.".format(len(phoneNumber)))
+print ("There are {0} different telephone numbers in the records.".format(len(unique_tele_nums)))
 """
 TASK 1:
 How many different telephone numbers are there in the records? 
