@@ -60,15 +60,16 @@ with open('calls.csv', 'r') as f:
         # else, must be mobile number, just get prefix
         bangalore_area_code.add(get_mobile_prefix(call[1]))
 
-        
-        
+#FINALLY, sort the answer
+bangalore_area_code = list(bangalore_area_code);
+bangalore_area_code.sort();
 
         
 #PART A
 print("""The numbers called by people in Bangalore have codes: 
 {}""".format("\n".join(bangalore_area_code)))
 #PART B
-print("{} percent of calls from fixed lines in Bangalore are calls to other fixed lines in Bangalore.".format((round(fixed_lines_in_bangalore / total * 100, 2))))
+print("{} percent of calls from fixed lines in Bangalore are calls to other fixed lines in Bangalore.".format((round(fixed_lines_in_bangalore / total_call_from_bangalore * 100, 2))))
 
 """
 TASK 3:
