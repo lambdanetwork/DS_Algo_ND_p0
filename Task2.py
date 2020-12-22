@@ -13,20 +13,13 @@ with open('calls.csv', 'r') as f:
     reader = csv.reader(f)
     calls = list(reader)
     for call in calls:
-        incoming_number = call[0];
-        answering_number = call[1];
-        duration = call[3]
-
-        if(incoming_number in phone_duration):
-            phone_duration[incoming_number] = phone_duration[incoming_number] + int(duration)
-        else:
-            phone_duration[incoming_number] = int(duration);
-        
-        if(answering_number in phone_duration):
-            phone_duration[answering_number] = phone_duration[answering_number] + int(duration)
-        else:
-            phone_duration[answering_number] = int(duration);
-        
+        duration = int(call[3])
+        for number in call[0:2]:
+            try:
+                phone_duration[number] += duration
+            except KeyError:
+                phone_duration[number] = duration
+            
 max_duration = 0;
 max_phone_number = [];
 for phone_number, duration in phone_duration.items():
