@@ -6,7 +6,6 @@ import csv
 
 outgoing = set()
 non_tele = set()
-answer = set();
 
 with open('texts.csv', 'r') as f:
     reader = csv.reader(f)
