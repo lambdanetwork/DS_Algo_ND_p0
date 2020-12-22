@@ -12,7 +12,7 @@ with open('texts.csv', 'r') as f:
 with open('calls.csv', 'r') as f:
     reader = csv.reader(f)
     calls = list(reader)
-    lastCall = calls[0]
+    lastCall = calls[-1]
     print("Last record of calls, {0} calls {1} at time {2}, lasting {3} seconds".format(lastCall[0], lastCall[1], lastCall[2], lastCall[3]))
 
 
