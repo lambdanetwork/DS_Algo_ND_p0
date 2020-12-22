@@ -8,32 +8,30 @@ text_outgoing_phone_number = {};
 call_incoming_number =  {};
 call_answering_number =  {};
 
+outgoing = set()
+non_tele = set()
 answer = set();
 
 with open('texts.csv', 'r') as f:
     reader = csv.reader(f)
     texts = list(reader)
     for text in texts:
-        incoming_number = text[0];
-        answering_number = text[1];
-        text_outgoing_phone_number[incoming_number] = True;
-        text_outgoing_phone_number[answering_number] = True;
+        non_tele.add(text[0])
+        non_tele.add(text[1])
 
 with open('calls.csv', 'r') as f:
     reader = csv.reader(f)
     calls = list(reader)
     for call in calls:
-        incoming_number = call[0];
-        answering_number = call[1];
-        call_incoming_number[incoming_number] = True;
-        call_answering_number[answering_number] = True;
+        outgoing.add(call[0])
+        non_tele.add(call[1])
 
-for incoming_call in call_incoming_number:
-    if not(incoming_call in text_outgoing_phone_number) and not(incoming_call in call_answering_number):
-        answer.add(incoming_number)
+tele = outgoing.difference(non_tele)
+
+print("""These numbers could be telemarketers: 
+ {}""".format("\n ".join(tele)))
 
 
-print("These numbers could be telemarketers: {}".format(", ".join(answer)))
 """
 TASK 4:
 The telephone company want to identify numbers that might be doing
